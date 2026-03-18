@@ -1,7 +1,7 @@
 {
   "name": "@stash/platform-windows",
   "version": "0.1.0",
-  "description": "Windows platform support for Stash",
+  "description": "Windows platform support for Stash It",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

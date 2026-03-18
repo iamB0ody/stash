@@ -1,7 +1,7 @@
 {
   "name": "@stash/engine",
   "version": "0.1.0",
-  "description": "Stash engine — auto-detects platform and provides unified API",
+  "description": "Stash It engine — auto-detects platform and provides unified API",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,0 +1,44 @@
+{
+  "name": "stashitnow",
+  "version": "0.1.1",
+  "description": "Your disk is full of junk. Let's fix that.",
+  "type": "module",
+  "bin": {
+    "stashitnow": "./dist/bin.js"
+  },
+  "main": "./dist/bin.js",
+  "files": ["dist"],
+  "scripts": {
+    "bundle": "tsup"
+  },
+  "keywords": [
+    "cli",
+    "storage",
+    "cleaner",
+    "disk",
+    "cache",
+    "cleanup",
+    "developer-tools",
+    "macos",
+    "npm-cache",
+    "docker",
+    "xcode",
+    "ios-simulator",
+    "android",
+    "node-modules",
+    "stashit"
+  ],
+  "author": "iamB0ody",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamB0ody/stashit.git"
+  },
+  "homepage": "https://github.com/iamB0ody/stashit",
+  "bugs": {
+    "url": "https://github.com/iamB0ody/stashit/issues"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}

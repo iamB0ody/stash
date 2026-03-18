@@ -11,7 +11,7 @@
 
 **Your disk is full of junk. Let's fix that.**
 
-[![npm](https://img.shields.io/badge/npx-stashit-f472b6?logo=npm&logoColor=white)](https://www.npmjs.com/package/stashit)
+[![npm](https://img.shields.io/badge/npx-stashitnow-f472b6?logo=npm&logoColor=white)](https://www.npmjs.com/package/stashitnow)
 [![Node.js](https://img.shields.io/badge/Node.js-≥22-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -31,7 +31,7 @@
 ## TL;DR
 
 ```bash
-npx stashit
+npx stashitnow
 ```
 
 That's it. One command. Watch the gigabytes come back.
@@ -52,11 +52,11 @@ You could hunt them down manually. Or you could just **stash it**.
 
 ```bash
 # Just run it. No install needed.
-npx stashit
+npx stashitnow
 
 # Or install globally if you're a frequent cleaner
-npm i -g stashit
-stashit
+npm i -g stashitnow
+stashitnow
 ```
 
 > Requires **Node.js 22+**
@@ -99,7 +99,7 @@ Not touching these. Just showing you the damage.
 
 ## Features
 
-- **One command** — `npx stashit` and you're scanning
+- **One command** — `npx stashitnow` and you're scanning
 - **Smart detection** — only shows tools you actually have installed
 - **APFS-aware** — accurate disk numbers on macOS, not the lies `df` tells
 - **Safe by default** — won't delete anything risky without asking
@@ -130,7 +130,7 @@ Every OS implements one interface. The engine picks the right one. The CLI (or M
 ```bash
 # Clone it
 git clone https://github.com/iamB0ody/stashit.git
-cd stash
+cd stashit
 
 # Install
 pnpm install
@@ -164,7 +164,7 @@ pnpm graph            # Nx dependency graph
 - [x] macOS support (14 safe + 3 selective + 2 display categories)
 - [x] Interactive CLI with Quick Clean & Select Clean
 - [x] Dev Tools manager (iOS Sims, Android SDK, AVDs)
-- [ ] `npx stashit` — publish to npm
+- [x] `npx stashitnow` — published on npm
 - [ ] Windows support
 - [ ] Linux support
 - [ ] MCP server (Claude Code, Cline, Continue, Codex)

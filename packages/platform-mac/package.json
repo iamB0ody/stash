@@ -1,7 +1,7 @@
 {
   "name": "@stash/platform-mac",
   "version": "0.1.0",
-  "description": "macOS platform support for Stash",
+  "description": "macOS platform support for Stash It",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,7 +1,7 @@
 /**
- * Stash MCP Server
+ * Stash It — MCP Server
  *
- * Exposes Stash functionality as MCP tools for AI coding assistants:
+ * Exposes Stash It functionality as MCP tools for AI coding assistants:
  * - Claude Code
  * - OpenCode
  * - Codex

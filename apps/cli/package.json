@@ -1,7 +1,7 @@
 {
   "name": "@stash/cli",
   "version": "0.1.0",
-  "description": "Stash — interactive CLI storage cleaner for developers",
+  "description": "Stash It — interactive CLI storage cleaner",
   "type": "module",
   "bin": {
     "stash": "./dist/main.js"

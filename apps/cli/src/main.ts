@@ -30,7 +30,7 @@ function showBanner() {
   console.log();
   console.log(
     boxen(
-      `${chalk.bold('Stash')} ${chalk.gray(`v${VERSION}`)}\n${chalk.gray('Storage Cleaner for Developers')}`,
+      `${chalk.bold('Stash It')} ${chalk.gray(`v${VERSION}`)}\n${chalk.gray('Your disk is full of junk. Let\'s fix that.')}`,
       {
         padding: { top: 0, bottom: 0, left: 1, right: 1 },
         borderColor: 'gray',
@@ -289,7 +289,7 @@ async function main() {
     const action = await mainMenu();
 
     if (p.isCancel(action)) {
-      p.outro(chalk.cyan(`${figures.heart} Your Mac thanks you. Goodbye!`));
+      p.outro(chalk.cyan(`${figures.heart} Your disk thanks you. Goodbye!`));
       process.exit(0);
     }
 

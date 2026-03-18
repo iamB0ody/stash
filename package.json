@@ -1,7 +1,7 @@
 {
-  "name": "@stash/monorepo",
+  "name": "stashit",
   "private": true,
-  "description": "Multi-platform storage cleaner for developers",
+  "description": "Your disk is full of junk. Let's fix that.",
   "scripts": {
     "build": "nx run-many -t build",
     "dev": "nx run @stash/cli:dev",
@@ -17,6 +17,7 @@
     "@types/node": "^22.19.15",
     "nx": "^20.5.0",
     "prettier": "^3.5.3",
+    "tsup": "^8.5.1",
     "typescript": "~5.8.2"
   },
   "packageManager": "pnpm@10.26.2",

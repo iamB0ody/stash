@@ -1,7 +1,7 @@
 {
   "name": "@stash/mcp",
   "version": "0.1.0",
-  "description": "Stash MCP server — for Claude, OpenCode, Codex, and other AI tools",
+  "description": "Stash It MCP server — for Claude, OpenCode, Codex, and other AI tools",
   "type": "module",
   "private": true,
   "main": "./dist/index.js",
