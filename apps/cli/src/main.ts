@@ -5,8 +5,21 @@ import boxen from 'boxen';
 import figures from 'figures';
 import ora from 'ora';
 import * as p from '@clack/prompts';
-import { createEngine, type Platform, type ScanResult, type CleanResult } from '@stash/engine';
-import { displayStorageOverview, displayScanResults, displayCleanResults, formatBytesSimple } from './display.js';
+import {
+  createEngine,
+  logAction,
+  getHistory,
+  clearHistory,
+  type Platform,
+  type ScanResult,
+  type CleanResult,
+} from '@stash/engine';
+import {
+  displayStorageOverview,
+  displayScanResults,
+  displayCleanResults,
+  formatBytesSimple,
+} from './display.js';
 
 const VERSION = '0.1.0';
 
@@ -18,19 +31,19 @@ function showBanner() {
   console.log(
     chalk.bold.cyan(
       [
-        '  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557  \u2588\u2588\u2557',
-        '  \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u2550\u2588\u2588\u2554\u2550\u2550\u255D\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255D\u2588\u2588\u2551  \u2588\u2588\u2551',
-        '  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557   \u2588\u2588\u2551   \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551',
-        '  \u255A\u2550\u2550\u2550\u2550\u2588\u2588\u2551   \u2588\u2588\u2551   \u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u255A\u2550\u2550\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551',
-        '  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551   \u2588\u2588\u2551   \u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551',
-        '  \u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D   \u255A\u2550\u255D   \u255A\u2550\u255D  \u255A\u2550\u255D\u255A\u2550\u2550\u2550\u2550\u2550\u2550\u255D\u255A\u2550\u255D  \u255A\u2550\u255D',
+        '  ███████╗████████╗ █████╗ ███████╗██╗  ██╗',
+        '  ██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║  ██║',
+        '  ███████╗   ██║   █████████║███████╗███████║',
+        '  ╚════██║   ██║   ██╔══██║╚════██║██╔══██║',
+        '  ███████║   ██║   ██║  ██║███████║██║  ██║',
+        '  ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝',
       ].join('\n'),
     ),
   );
   console.log();
   console.log(
     boxen(
-      `${chalk.bold('Stash It')} ${chalk.gray(`v${VERSION}`)}\n${chalk.gray('Your disk is full of junk. Let\'s fix that.')}`,
+      `${chalk.bold('Stash It')} ${chalk.gray(`v${VERSION}`)}\n${chalk.gray("Your disk is full of junk. Let's fix that.")}`,
       {
         padding: { top: 0, bottom: 0, left: 1, right: 1 },
         borderColor: 'gray',
@@ -40,6 +53,27 @@ function showBanner() {
     ),
   );
   console.log();
+}
+
+// ──── Logging helpers ────
+
+function logCleanResults(
+  results: CleanResult[],
+  action: 'clean' | 'quick-clean',
+  platformName: string,
+) {
+  for (const result of results) {
+    logAction({
+      action,
+      categoryId: result.id,
+      categoryName: result.name,
+      freedBytes: result.freedBytes,
+      freedHuman: result.freedHuman,
+      success: result.success,
+      platform: platformName,
+      error: result.error,
+    });
+  }
 }
 
 // ──── Flows ────
@@ -56,6 +90,18 @@ async function runScan(engine: Platform): Promise<ScanResult[]> {
   displayStorageOverview(overview);
   displayScanResults(results);
 
+  // Log scan action
+  const totalBytes = results.reduce((sum, r) => sum + r.sizeBytes, 0);
+  logAction({
+    action: 'scan',
+    categoryId: 'all',
+    categoryName: 'Full Scan',
+    freedBytes: 0,
+    freedHuman: '0 B',
+    success: true,
+    platform: engine.name,
+  });
+
   return results;
 }
 
@@ -67,13 +113,14 @@ async function mainMenu(): Promise<string | symbol> {
       { label: 'Quick Clean', value: 'quick-clean', hint: 'Clean all safe caches' },
       { label: 'Select & Clean', value: 'select-clean', hint: 'Pick what to clean' },
       { label: 'Dev Tools', value: 'devtools', hint: 'iOS Sims, Android SDK' },
+      { label: 'History', value: 'history', hint: 'View past actions' },
       { label: 'Exit', value: 'exit' },
     ],
   });
 }
 
 async function quickCleanFlow(engine: Platform) {
-  p.intro(chalk.bold.green('Quick Clean \u2014 All Safe Items'));
+  p.intro(chalk.bold.green('Quick Clean — All Safe Items'));
 
   const spinner = ora('Scanning safe items...').start();
   const results = await engine.scanAll((name) => {
@@ -112,6 +159,7 @@ async function quickCleanFlow(engine: Platform) {
   console.log();
   const cleanResults = await engine.cleanAllSafe();
   displayCleanResults(cleanResults);
+  logCleanResults(cleanResults, 'quick-clean', engine.name);
 }
 
 async function selectCleanFlow(engine: Platform) {
@@ -146,7 +194,9 @@ async function selectCleanFlow(engine: Platform) {
   ];
 
   p.log.message(
-    chalk.gray(`${figures.arrowDown}${figures.arrowUp} Navigate  Space to toggle  A to select all  Enter to confirm`),
+    chalk.gray(
+      `${figures.arrowDown}${figures.arrowUp} Navigate  Space to toggle  A to select all  Enter to confirm`,
+    ),
   );
 
   const selected = await p.multiselect({
@@ -194,6 +244,7 @@ async function selectCleanFlow(engine: Platform) {
 
   if (cleanResults.length > 0) {
     displayCleanResults(cleanResults);
+    logCleanResults(cleanResults, 'clean', engine.name);
   }
 }
 
@@ -206,7 +257,9 @@ async function handleSelectiveClean(engine: Platform, categoryId: string) {
   }
 
   p.log.message(
-    chalk.gray(`${figures.arrowDown}${figures.arrowUp} Navigate  Space to toggle  A to select all  Enter to confirm`),
+    chalk.gray(
+      `${figures.arrowDown}${figures.arrowUp} Navigate  Space to toggle  A to select all  Enter to confirm`,
+    ),
   );
 
   const selected = await p.multiselect({
@@ -231,27 +284,126 @@ async function handleSelectiveClean(engine: Platform, categoryId: string) {
     if (result.success) {
       p.log.success(`Deleted ${result.name}`);
     } else {
-      p.log.error(`Failed: ${result.name} \u2014 ${result.error}`);
+      p.log.error(`Failed: ${result.name} — ${result.error}`);
     }
+  }
+
+  // Log selective deletions
+  for (const result of results) {
+    logAction({
+      action: 'selective-delete',
+      categoryId,
+      categoryName: result.name,
+      freedBytes: result.freedBytes,
+      freedHuman: result.freedHuman,
+      success: result.success,
+      platform: engine.name,
+      error: result.error,
+    });
   }
 }
 
 async function devToolsFlow(engine: Platform) {
   p.intro(chalk.bold.magenta('Dev Tools Manager'));
 
+  const options: { label: string; value: string; hint?: string }[] = [];
+
+  // Show iOS Simulators only on macOS
+  if (engine.id === 'mac') {
+    options.push({
+      label: 'iOS Simulators',
+      value: 'ios-simulators',
+      hint: 'Remove unused runtimes',
+    });
+  }
+
+  options.push(
+    { label: 'Android SDK Platforms', value: 'android-sdk', hint: 'Remove old versions' },
+    { label: 'Android Emulators', value: 'android-emulators', hint: 'Delete unused AVDs' },
+    { label: 'Back to main menu', value: 'back' },
+  );
+
   const tool = await p.select({
     message: 'Select a dev tool to manage:',
-    options: [
-      { label: 'iOS Simulators', value: 'ios-simulators', hint: 'Remove unused runtimes' },
-      { label: 'Android SDK Platforms', value: 'android-sdk', hint: 'Remove old versions' },
-      { label: 'Android Emulators', value: 'android-emulators', hint: 'Delete unused AVDs' },
-      { label: 'Back to main menu', value: 'back' },
-    ],
+    options,
   });
 
   if (p.isCancel(tool) || tool === 'back') return;
 
   await handleSelectiveClean(engine, tool);
+}
+
+async function historyFlow() {
+  p.intro(chalk.bold.blue('Action History'));
+
+  const history = getHistory(50);
+
+  if (history.length === 0) {
+    p.log.info('No actions recorded yet. Start cleaning to build your history!');
+    p.outro('');
+    return;
+  }
+
+  console.log();
+  for (const entry of history) {
+    const date = new Date(entry.timestamp);
+    const dateStr = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    const timeStr = date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    const icon = entry.success ? chalk.green(figures.tick) : chalk.red(figures.cross);
+    const actionLabel =
+      entry.action === 'scan'
+        ? chalk.cyan('SCAN')
+        : entry.action === 'quick-clean'
+          ? chalk.green('QUICK')
+          : entry.action === 'selective-delete'
+            ? chalk.yellow('SELECT')
+            : chalk.blue('CLEAN');
+
+    const freed =
+      entry.freedBytes > 0 ? chalk.green(`+${entry.freedHuman} freed`) : chalk.gray('—');
+
+    console.log(
+      `  ${icon} ${chalk.gray(`${dateStr} ${timeStr}`)}  ${actionLabel}  ${entry.categoryName.padEnd(22)} ${freed}`,
+    );
+  }
+
+  console.log();
+
+  const totalFreed = history.filter((e) => e.success).reduce((sum, e) => sum + e.freedBytes, 0);
+
+  if (totalFreed > 0) {
+    p.log.message(
+      `${figures.pointer} Total freed (all time): ${chalk.green.bold(formatBytesSimple(totalFreed))}`,
+    );
+  }
+
+  const action = await p.select({
+    message: 'Options:',
+    options: [
+      { label: 'Back to main menu', value: 'back' },
+      { label: 'Clear history', value: 'clear', hint: 'Remove all history entries' },
+    ],
+  });
+
+  if (!p.isCancel(action) && action === 'clear') {
+    const confirmed = await p.confirm({
+      message: 'Clear all history?',
+      initialValue: false,
+    });
+
+    if (!p.isCancel(confirmed) && confirmed) {
+      clearHistory();
+      p.log.success('History cleared.');
+    }
+  }
 }
 
 async function scanFlow(engine: Platform) {
@@ -275,7 +427,7 @@ async function main() {
       disk.usedPercent > 90 ? chalk.red : disk.usedPercent > 70 ? chalk.yellow : chalk.green;
     const label = disk === overview.primary ? chalk.bold(disk.name) : disk.name;
     console.log(
-      `  ${figures.pointer} ${label} ${chalk.gray('\u2014')} ${usedColor.bold(`${disk.usedPercent}% used`)} ${chalk.gray('\u2014')} ${disk.usedHuman} / ${disk.totalHuman}`,
+      `  ${figures.pointer} ${label} ${chalk.gray('—')} ${usedColor.bold(`${disk.usedPercent}% used`)} ${chalk.gray('—')} ${disk.usedHuman} / ${disk.totalHuman}`,
     );
   }
   console.log(
@@ -305,6 +457,9 @@ async function main() {
         break;
       case 'devtools':
         await devToolsFlow(engine);
+        break;
+      case 'history':
+        await historyFlow();
         break;
       case 'exit':
         p.outro(chalk.cyan(`${figures.heart} Goodbye!`));
