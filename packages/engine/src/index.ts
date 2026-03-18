@@ -37,6 +37,14 @@ export type {
   Platform,
   RiskLevel,
   ScanResult,
+  UpdateInfo,
 } from '@stash/core';
 
-export { formatBytes, logAction, getHistory, clearHistory } from '@stash/core';
+export {
+  formatBytes,
+  logAction,
+  getHistory,
+  clearHistory,
+  checkForUpdate,
+  runCommand,
+} from '@stash/core';

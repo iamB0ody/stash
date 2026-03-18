@@ -10,9 +10,11 @@ import {
   logAction,
   getHistory,
   clearHistory,
+  checkForUpdate,
   type Platform,
   type ScanResult,
   type CleanResult,
+  runCommand,
 } from '@stash/engine';
 import {
   displayStorageOverview,
@@ -21,7 +23,7 @@ import {
   formatBytesSimple,
 } from './display.js';
 
-const VERSION = '0.2.0';
+const VERSION = '0.3.0';
 
 // ──── Banner ────
 
@@ -114,6 +116,7 @@ async function mainMenu(): Promise<string | symbol> {
       { label: 'Select & Clean', value: 'select-clean', hint: 'Pick what to clean' },
       { label: 'Dev Tools', value: 'devtools', hint: 'iOS Sims, Android SDK' },
       { label: 'History', value: 'history', hint: 'View past actions' },
+      { label: 'Update', value: 'update', hint: 'Check for new version' },
       { label: 'Exit', value: 'exit' },
     ],
   });
@@ -406,6 +409,55 @@ async function historyFlow() {
   }
 }
 
+async function updateFlow() {
+  p.intro(chalk.bold.magenta('Update Check'));
+
+  const spinner = ora('Checking for updates...').start();
+  const info = await checkForUpdate(VERSION);
+  spinner.stop();
+
+  if (!info) {
+    p.log.warn('Could not reach npm registry. Check your internet connection.');
+    p.outro('');
+    return;
+  }
+
+  if (!info.updateAvailable) {
+    p.log.success(`You're on the latest version (v${VERSION}).`);
+    p.outro('');
+    return;
+  }
+
+  p.log.info(`Current version: ${chalk.gray(`v${info.currentVersion}`)}`);
+  p.log.info(`Latest version:  ${chalk.green.bold(`v${info.latestVersion}`)}`);
+  console.log();
+
+  const confirmed = await p.confirm({
+    message: 'Update now?',
+    initialValue: true,
+  });
+
+  if (p.isCancel(confirmed) || !confirmed) {
+    p.log.info(`Run ${chalk.cyan('npm i -g stashitnow@latest')} to update manually.`);
+    p.outro('');
+    return;
+  }
+
+  const updateSpinner = ora('Updating...').start();
+  try {
+    await runCommand('npm i -g stashitnow@latest');
+    updateSpinner.stop();
+    p.log.success(`Updated to v${info.latestVersion}!`);
+    p.log.info('Restart stashitnow to use the new version.');
+  } catch (err) {
+    updateSpinner.stop();
+    const message = err instanceof Error ? err.message : String(err);
+    p.log.error(`Update failed: ${message}`);
+    p.log.info(`Try manually: ${chalk.cyan('npm i -g stashitnow@latest')}`);
+  }
+  p.outro('');
+}
+
 async function scanFlow(engine: Platform) {
   p.intro(chalk.bold.cyan('Storage Scan'));
   await runScan(engine);
@@ -437,6 +489,20 @@ async function main() {
   );
   console.log();
 
+  // Non-blocking update check
+  checkForUpdate(VERSION)
+    .then((info) => {
+      if (info?.updateAvailable) {
+        console.log(
+          chalk.yellow(
+            `  ${figures.warning} Update available: v${info.currentVersion} → v${info.latestVersion}  Run ${chalk.cyan('npm i -g stashitnow@latest')} or select Update from the menu.`,
+          ),
+        );
+        console.log();
+      }
+    })
+    .catch(() => {});
+
   while (true) {
     const action = await mainMenu();
 
@@ -460,6 +526,9 @@ async function main() {
         break;
       case 'history':
         await historyFlow();
+        break;
+      case 'update':
+        await updateFlow();
         break;
       case 'exit':
         p.outro(chalk.cyan(`${figures.heart} Goodbye!`));

@@ -53,6 +53,12 @@ export interface DevToolItem {
   sizeBytes: number;
 }
 
+export interface UpdateInfo {
+  currentVersion: string;
+  latestVersion: string;
+  updateAvailable: boolean;
+}
+
 export interface ActionLogEntry {
   timestamp: string;
   action: 'clean' | 'selective-delete' | 'quick-clean' | 'scan';
