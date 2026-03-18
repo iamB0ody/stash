@@ -1,4 +1,5 @@
 export type {
+  ActionLogEntry,
   Category,
   CleanResult,
   DevToolItem,
@@ -11,3 +12,5 @@ export type {
 export type { Platform } from './platform.js';
 
 export { formatBytes, getDirectorySize, isToolAvailable, runCommand } from './utils.js';
+
+export { logAction, getHistory, clearHistory } from './logger.js';

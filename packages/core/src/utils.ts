@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { existsSync } from 'fs';
+import { platform } from 'os';
 
 const execAsync = promisify(exec);
 
@@ -24,6 +25,13 @@ export async function isToolAvailable(detectCommand: string): Promise<boolean> {
 export async function getDirectorySize(path: string): Promise<number> {
   if (!existsSync(path)) return 0;
   try {
+    if (platform() === 'win32') {
+      const { stdout } = await execAsync(
+        `powershell -NoProfile -Command "(Get-ChildItem -Recurse -Force -ErrorAction SilentlyContinue '${path.replace(/'/g, "''")}' | Measure-Object -Property Length -Sum).Sum"`,
+      );
+      const bytes = parseInt(stdout.trim());
+      return isNaN(bytes) ? 0 : bytes;
+    }
     const { stdout } = await execAsync(`du -sk "${path}" 2>/dev/null`);
     const kb = parseInt(stdout.split('\t')[0]);
     return isNaN(kb) ? 0 : kb * 1024;
@@ -36,5 +44,6 @@ export async function runCommand(
   command: string,
   timeoutMs = 120_000,
 ): Promise<{ stdout: string; stderr: string }> {
-  return execAsync(command, { timeout: timeoutMs });
+  const shell = platform() === 'win32' ? 'powershell.exe' : undefined;
+  return execAsync(command, { timeout: timeoutMs, shell });
 }

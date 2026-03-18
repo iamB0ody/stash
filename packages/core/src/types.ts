@@ -52,3 +52,15 @@ export interface DevToolItem {
   size: string;
   sizeBytes: number;
 }
+
+export interface ActionLogEntry {
+  timestamp: string;
+  action: 'clean' | 'selective-delete' | 'quick-clean' | 'scan';
+  categoryId: string;
+  categoryName: string;
+  freedBytes: number;
+  freedHuman: string;
+  success: boolean;
+  platform: string;
+  error?: string;
+}

@@ -28,6 +28,7 @@ export async function createEngine(): Promise<Platform> {
 
 // Re-export core types for convenience
 export type {
+  ActionLogEntry,
   Category,
   CleanResult,
   DevToolItem,
@@ -38,4 +39,4 @@ export type {
   ScanResult,
 } from '@stash/core';
 
-export { formatBytes } from '@stash/core';
+export { formatBytes, logAction, getHistory, clearHistory } from '@stash/core';
