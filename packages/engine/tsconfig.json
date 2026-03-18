@@ -1,5 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [],
-  "references": [{ "path": "./tsconfig.lib.json" }]
+  "references": [
+    {
+      "path": "../platform-linux"
+    },
+    {
+      "path": "../platform-windows"
+    },
+    {
+      "path": "../platform-mac"
+    },
+    {
+      "path": "../core"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
 }

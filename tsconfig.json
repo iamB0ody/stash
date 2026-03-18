@@ -3,12 +3,29 @@
   "compileOnSave": false,
   "files": [],
   "references": [
-    { "path": "./packages/core" },
-    { "path": "./packages/platform-mac" },
-    { "path": "./packages/platform-windows" },
-    { "path": "./packages/platform-linux" },
-    { "path": "./packages/engine" },
-    { "path": "./apps/cli" },
-    { "path": "./apps/mcp" }
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/platform-mac"
+    },
+    {
+      "path": "./packages/platform-windows"
+    },
+    {
+      "path": "./packages/platform-linux"
+    },
+    {
+      "path": "./packages/engine"
+    },
+    {
+      "path": "./apps/cli"
+    },
+    {
+      "path": "./apps/mcp"
+    },
+    {
+      "path": "./apps/stashit"
+    }
   ]
 }
