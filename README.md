@@ -18,7 +18,7 @@
 
 <br>
 
-<img alt="Stash CLI Screenshot" src="docs/screenshot.png" width="620">
+<img alt="Stash CLI Screenshot" src="docs/screenshot.svg" width="620">
 
 <br>
 
