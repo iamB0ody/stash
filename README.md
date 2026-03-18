@@ -4,21 +4,23 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="docs/logo-light.svg">
-  <img alt="STASH" src="docs/logo-dark.svg" width="420">
+  <img alt="STASH IT" src="docs/logo-dark.svg" width="460">
 </picture>
-
-**Multi-platform storage cleaner for developers**
-
-[![Node.js](https://img.shields.io/badge/Node.js-≥22.0.0-339933?logo=node.js&logoColor=white)](https://nodejs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![pnpm](https://img.shields.io/badge/pnpm-10.x-F69220?logo=pnpm&logoColor=white)](https://pnpm.io)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-
-[Getting Started](#getting-started) · [Features](#features) · [Architecture](#architecture) · [Development](#development)
 
 <br>
 
-<img alt="Stash CLI Screenshot" src="docs/screenshot.png" width="620">
+**Your disk is full of junk. Let's fix that.**
+
+[![npm](https://img.shields.io/badge/npx-stashit-f472b6?logo=npm&logoColor=white)](https://www.npmjs.com/package/stashit)
+[![Node.js](https://img.shields.io/badge/Node.js-≥22-339933?logo=node.js&logoColor=white)](https://nodejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+[Quick Start](#quick-start) · [What It Nukes](#what-it-nukes) · [How It Works](#how-it-works) · [Contributing](#contributing)
+
+<br>
+
+<img alt="Stash It — CLI Screenshot" src="docs/screenshot.png" width="620">
 
 <br>
 
@@ -26,191 +28,157 @@
 
 ---
 
-## What is Stash?
-
-Stash finds and cleans developer caches, build artifacts, and unused tooling that silently eat your disk space. One scan, one click, gigabytes back.
-
-- **Package manager caches** — npm, pnpm, Yarn, Homebrew, pip, CocoaPods, Gradle, Maven
-- **Build artifacts** — Xcode Derived Data, TypeScript, Electron, Playwright
-- **Dev tools** — iOS Simulators, Android SDK platforms, Android Emulators
-- **Container cleanup** — Docker dangling images and build cache
-- **Browser caches** — Chrome cache
-
-## Getting Started
-
-### Prerequisites
-
-- **Node.js** ≥ 22.0.0
-- **pnpm** ≥ 10.x
-
-### Install & Run
+## TL;DR
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/stash.git
-cd stash
-
-# Install dependencies
-pnpm install
-
-# Run the CLI
-pnpm dev
+npx stashit
 ```
+
+That's it. One command. Watch the gigabytes come back.
+
+## Why?
+
+You've got **gigs of crap** sitting on your machine right now:
+
+- `node_modules` caches from 47 abandoned side projects
+- Xcode Derived Data from that one time you tried SwiftUI
+- iOS Simulators for iOS versions that don't exist anymore
+- Docker images you pulled once and forgot about
+- Gradle, Maven, CocoaPods, pip — all hoarding downloads
+
+You could hunt them down manually. Or you could just **stash it**.
+
+## Quick Start
+
+```bash
+# Just run it. No install needed.
+npx stashit
+
+# Or install globally if you're a frequent cleaner
+npm i -g stashit
+stashit
+```
+
+> Requires **Node.js 22+**
+
+## What It Nukes
+
+### 🟢 Safe — just send it
+
+These are caches. They re-download automatically. Zero risk.
+
+| Target | What's hiding there |
+|--------|-------------------|
+| **npm / pnpm / Yarn** | Package manager download caches |
+| **Homebrew** | Old bottles and logs |
+| **pip** | Python package cache |
+| **Xcode Derived Data** | Build artifacts that rebuild on open |
+| **TypeScript / Playwright / Electron** | Compiler and browser caches |
+| **CocoaPods / Gradle / Maven** | Dependency caches |
+| **Docker** | Dangling images, stopped containers, build cache |
+| **Chrome** | Browser cache |
+
+### 🟡 Selective — you pick what goes
+
+These need your attention. Stash shows you what's there, you choose what to axe.
+
+| Target | What you're choosing |
+|--------|---------------------|
+| **iOS Simulators** | Which simulator devices to delete |
+| **Android SDK** | Which platform versions to remove |
+| **Android Emulators** | Which AVDs to trash |
+
+### ⚪ Display Only — just so you know
+
+Not touching these. Just showing you the damage.
+
+| Target | Why it's here |
+|--------|--------------|
+| **Downloads** | You know what's in there. We both know. |
+| **Screen Recordings** | That 4GB screen recording from last Tuesday. |
 
 ## Features
 
-### Three Risk Levels
+- **One command** — `npx stashit` and you're scanning
+- **Smart detection** — only shows tools you actually have installed
+- **APFS-aware** — accurate disk numbers on macOS, not the lies `df` tells
+- **Safe by default** — won't delete anything risky without asking
+- **Interactive** — pick exactly what to clean with multi-select
+- **Quick Clean** — one-click nuke for all safe caches
+- **Dev Tools Manager** — manage iOS Simulators, Android SDK & Emulators
 
-| Level | Color | Behavior |
-|-------|-------|----------|
-| **Safe** | 🟢 Green | Auto-cleanup — caches that re-download on demand |
-| **Selective** | 🟡 Yellow | You pick — choose which simulators, SDK versions, or emulators to remove |
-| **Display Only** | ⚪ Gray | Awareness — shows size of Downloads, Screen Recordings, etc. |
-
-### CLI Workflows
-
-| Command | Description |
-|---------|-------------|
-| **Scan Storage** | Full disk analysis with per-category breakdown |
-| **Quick Clean** | One-click cleanup of all safe caches |
-| **Select & Clean** | Multi-select interface to pick what to clean |
-| **Dev Tools** | Manage iOS Simulators, Android SDK, Android Emulators |
-
-### Accurate Disk Reporting
-
-On macOS, Stash parses APFS container data directly from `diskutil` for accurate capacity numbers — not the per-volume estimates that `df` reports.
-
-## Architecture
+## How It Works
 
 ```
-@stash/monorepo
+stashit
 ├── packages/
-│   ├── core/               Shared types, interfaces, utilities
-│   ├── engine/             Platform detection & factory
-│   ├── platform-mac/       macOS implementation (23 categories)
+│   ├── core/               Types & utilities
+│   ├── engine/             Platform detection
+│   ├── platform-mac/       macOS (23 categories)
 │   ├── platform-windows/   Windows (coming soon)
 │   └── platform-linux/     Linux (coming soon)
 ├── apps/
-│   ├── cli/                Interactive terminal UI
-│   └── mcp/                MCP server for AI assistants (coming soon)
+│   ├── cli/                The interactive CLI
+│   └── mcp/                AI assistant integration (coming soon)
 └── docs/
 ```
 
-### Design Principles
+Every OS implements one interface. The engine picks the right one. The CLI (or MCP server, or future VSCode extension) just talks to the engine. Clean separation, works everywhere.
 
-- **Platform abstraction** — each OS implements a single `Platform` interface
-- **Factory pattern** — the engine detects the OS and returns the right implementation
-- **Channel-agnostic** — core logic is decoupled from the UI layer (CLI, MCP, future extensions)
-- **Monorepo** — Nx workspace with pnpm for fast, incremental builds
-
-### Platform Interface
-
-Every platform implements this contract:
-
-```typescript
-interface Platform {
-  readonly name: string;
-  readonly id: 'mac' | 'windows' | 'linux';
-
-  getStorageOverview(): Promise<StorageOverview>;
-  getCategories(): Category[];
-  scanCategory(category: Category): Promise<ScanResult>;
-  scanAll(onProgress?: (name: string) => void): Promise<ScanResult[]>;
-  cleanItem(id: string): Promise<CleanResult>;
-  cleanAllSafe(): Promise<CleanResult[]>;
-  listSelectiveItems(id: string): Promise<DevToolItem[]>;
-  deleteSelectiveItems(categoryId: string, itemIds: string[]): Promise<CleanResult[]>;
-}
-```
-
-## macOS Categories
-
-<details>
-<summary><strong>Safe (auto-cleanup)</strong></summary>
-
-| Category | Clean Command |
-|----------|--------------|
-| Yarn Cache | `yarn cache clean` |
-| pnpm Store | `pnpm store prune` |
-| npm Cache | `npm cache clean --force` |
-| Homebrew Cache | `brew cleanup --prune=all` |
-| pip Cache | `pip cache purge` |
-| Xcode Derived Data | `rm -rf ~/Library/Developer/Xcode/DerivedData/*` |
-| TypeScript Cache | `rm -rf ~/Library/Caches/typescript/*` |
-| Playwright Cache | `rm -rf ~/Library/Caches/ms-playwright/*` |
-| Electron Cache | `rm -rf ~/Library/Caches/electron/*` |
-| CocoaPods Cache | `pod cache clean --all` |
-| Gradle Cache | `rm -rf ~/.gradle/caches/*` |
-| Maven Local Repository | `rm -rf ~/.m2/repository/*` |
-| Docker (dangling) | `docker system prune -f` |
-| Google Chrome Cache | `rm -rf ~/Library/Caches/Google/Chrome/*` |
-
-</details>
-
-<details>
-<summary><strong>Selective (user picks)</strong></summary>
-
-| Category | What you choose |
-|----------|----------------|
-| iOS Simulators | Individual simulator devices by runtime |
-| Android SDK | Platform versions to remove |
-| Android Emulators | AVDs to delete |
-
-</details>
-
-<details>
-<summary><strong>Display only (awareness)</strong></summary>
-
-| Category | Path |
-|----------|------|
-| Screen Recordings | `~/Desktop`, `~/Movies` |
-| Downloads | `~/Downloads` |
-
-</details>
-
-## Development
-
-### Scripts
+## Contributing
 
 ```bash
-pnpm dev              # Run the CLI in dev mode
-pnpm build            # Build all packages
-pnpm typecheck        # Type-check all packages
-pnpm test             # Run all tests
-pnpm lint             # Lint all packages
-pnpm format           # Format with Prettier
-pnpm graph            # Visualize dependency graph
+# Clone it
+git clone https://github.com/iamB0ody/stash.git
+cd stash
+
+# Install
+pnpm install
+
+# Run in dev mode
+pnpm dev
+
+# Other commands
+pnpm build            # Build everything
+pnpm typecheck        # Type-check
+pnpm test             # Run tests
+pnpm lint             # Lint
+pnpm format           # Prettier
+pnpm graph            # Nx dependency graph
 ```
 
-### Project Structure
+### Project Map
 
-| Package | Description |
+| Package | What it does |
 |---------|-------------|
-| `@stash/core` | Shared types (`Category`, `ScanResult`, `CleanResult`, `Platform`) and utilities (`formatBytes`, `getDirectorySize`, `runCommand`) |
-| `@stash/engine` | Detects the current OS and returns the right `Platform` implementation |
-| `@stash/platform-mac` | Full macOS support — scanner, cleaner, dev tools (23 categories) |
+| `@stash/core` | Types, interfaces, shared utils |
+| `@stash/engine` | Detects your OS, returns the right platform |
+| `@stash/platform-mac` | macOS support — 23 scan categories + dev tools |
 | `@stash/platform-windows` | Windows support (placeholder) |
 | `@stash/platform-linux` | Linux support (placeholder) |
-| `@stash/cli` | Interactive CLI built with `@clack/prompts`, `chalk`, `ora`, `boxen` |
+| `@stash/cli` | The interactive CLI you see above |
 | `@stash/mcp` | MCP server for AI coding assistants (placeholder) |
-
-### Tech Stack
-
-- **Monorepo** — Nx 20 + pnpm workspaces
-- **Language** — TypeScript 5.8 (ESM)
-- **CLI UI** — @clack/prompts, chalk, ora, boxen, cli-table3, figures
-- **Formatting** — Prettier
 
 ## Roadmap
 
-- [ ] Windows platform support
-- [ ] Linux platform support
-- [ ] MCP server for AI assistants (Claude Code, Cline, Continue)
-- [ ] Test suite
+- [x] macOS support (14 safe + 3 selective + 2 display categories)
+- [x] Interactive CLI with Quick Clean & Select Clean
+- [x] Dev Tools manager (iOS Sims, Android SDK, AVDs)
+- [ ] `npx stashit` — publish to npm
+- [ ] Windows support
+- [ ] Linux support
+- [ ] MCP server (Claude Code, Cline, Continue, Codex)
 - [ ] CI/CD pipeline
-- [ ] npm publishing (`npx stash`)
 - [ ] VSCode extension
 
 ## License
 
-MIT
+MIT — do whatever you want with it.
+
+---
+
+<div align="center">
+
+**Your disk called. It said stash it.**
+
+</div>
