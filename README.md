@@ -4,7 +4,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/logo-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="docs/logo-light.svg">
-  <img alt="STASH" src="docs/logo-dark.svg" width="480">
+  <img alt="STASH" src="docs/logo-dark.svg" width="420">
 </picture>
 
 **Multi-platform storage cleaner for developers**
@@ -15,6 +15,12 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 [Getting Started](#getting-started) · [Features](#features) · [Architecture](#architecture) · [Development](#development)
+
+<br>
+
+<img alt="Stash CLI Screenshot" src="docs/screenshot.svg" width="620">
+
+<br>
 
 </div>
 
