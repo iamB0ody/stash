@@ -4,7 +4,7 @@ import { homedir } from 'os';
 const HOME = homedir();
 
 export const categories: Category[] = [
-  // Safe (green) — one-click cleanup
+  // ──── Safe (green) — one-click cleanup ────
   {
     id: 'yarn',
     name: 'Yarn Cache',
@@ -60,6 +60,15 @@ export const categories: Category[] = [
     detectCommand: 'which xcodebuild',
   },
   {
+    id: 'xcode-archives',
+    name: 'Xcode Archives',
+    risk: 'safe',
+    description: 'Old Xcode build archives. Safe to remove if already distributed.',
+    paths: [`${HOME}/Library/Developer/Xcode/Archives`],
+    cleanCommand: `rm -rf "${HOME}/Library/Developer/Xcode/Archives"/*`,
+    detectCommand: 'which xcodebuild',
+  },
+  {
     id: 'typescript',
     name: 'TypeScript Cache',
     risk: 'safe',
@@ -110,6 +119,51 @@ export const categories: Category[] = [
     cleanCommand: `rm -rf "${HOME}/.m2/repository"/*`,
   },
   {
+    id: 'cargo',
+    name: 'Cargo Registry Cache',
+    risk: 'safe',
+    description: 'Rust Cargo registry cache and git checkouts. Re-downloads as needed.',
+    paths: [`${HOME}/.cargo/registry`],
+    cleanCommand: `rm -rf "${HOME}/.cargo/registry/cache"/* "${HOME}/.cargo/registry/src"/*`,
+    detectCommand: 'which cargo',
+  },
+  {
+    id: 'go-cache',
+    name: 'Go Module Cache',
+    risk: 'safe',
+    description: 'Go module download cache. Re-downloads when needed.',
+    paths: [`${HOME}/go/pkg/mod/cache`, `${HOME}/Library/Caches/go-build`],
+    cleanCommand: 'go clean -modcache && go clean -cache',
+    detectCommand: 'which go',
+  },
+  {
+    id: 'composer',
+    name: 'Composer Cache',
+    risk: 'safe',
+    description: 'PHP Composer package cache. Re-downloads on next install.',
+    paths: [`${HOME}/Library/Caches/composer`, `${HOME}/.composer/cache`],
+    cleanCommand: 'composer clear-cache',
+    detectCommand: 'which composer',
+  },
+  {
+    id: 'ruby-gems',
+    name: 'Ruby Gems Cache',
+    risk: 'safe',
+    description: 'Ruby gem download cache. Re-downloads as needed.',
+    paths: [`${HOME}/.gem`],
+    cleanCommand: 'gem cleanup && gem sources --clear-all',
+    detectCommand: 'which gem',
+  },
+  {
+    id: 'swift-pm',
+    name: 'Swift Package Manager Cache',
+    risk: 'safe',
+    description: 'Swift PM resolved packages cache. Re-resolves on next build.',
+    paths: [`${HOME}/Library/Caches/org.swift.swiftpm`],
+    cleanCommand: `rm -rf "${HOME}/Library/Caches/org.swift.swiftpm"/*`,
+    detectCommand: 'which swift',
+  },
+  {
     id: 'docker',
     name: 'Docker (dangling images/containers)',
     risk: 'safe',
@@ -127,7 +181,7 @@ export const categories: Category[] = [
     cleanCommand: `rm -rf "${HOME}/Library/Caches/Google/Chrome"/*`,
   },
 
-  // Selective (yellow)
+  // ──── Selective (yellow) ────
   {
     id: 'ios-simulators',
     name: 'iOS Simulators',
@@ -156,7 +210,7 @@ export const categories: Category[] = [
     detectCommand: 'which emulator',
   },
 
-  // Display only (gray)
+  // ──── Display only (gray) ────
   {
     id: 'screen-recordings',
     name: 'Screen Recordings',
