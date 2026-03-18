@@ -4,10 +4,12 @@
   "description": "Your disk is full of junk. Let's fix that.",
   "type": "module",
   "bin": {
-    "stashitnow": "./dist/bin.js"
+    "stashitnow": "dist/bin.js"
   },
   "main": "./dist/bin.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "bundle": "tsup"
   },
