@@ -1,6 +1,6 @@
 {
   "name": "stashitnow",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Your disk is full of junk. Let's fix that.",
   "type": "module",
   "bin": {
@@ -20,6 +20,7 @@
     "cleanup",
     "developer-tools",
     "macos",
+    "windows",
     "npm-cache",
     "docker",
     "xcode",
