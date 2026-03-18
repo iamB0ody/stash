@@ -1,28 +1,31 @@
 # Mac Storage Manager - CLI Tool
 
 ## Background
+
 Mac devices fill up fast, especially for software engineers. Analysis of a typical Mac Mini (460GB) found ~145GB in ~/Library alone:
 
-| Item | Size | Risk |
-|------|------|------|
-| Yarn Cache | 17 GB | Safe |
-| iOS Simulators | 19 GB | Safe (rebuilds) |
-| Xcode Derived Data | 8.4 GB | Safe (rebuilds) |
-| Screen Recordings | 22 GB | User review only |
-| Android SDK | 25 GB | Partial (select versions) |
-| pnpm Cache | 4.9 GB | Safe |
-| Homebrew Cache | 3.6 GB | Safe |
-| Google/Chrome Cache | 2.9 GB | Safe |
-| Playwright Cache | 520 MB | Safe |
-| Electron Cache | 418 MB | Safe |
-| TypeScript Cache | 380 MB | Safe |
-| pip Cache | 371 MB | Safe |
-| Downloads | 5.6 GB | User review only |
+| Item                | Size   | Risk                      |
+| ------------------- | ------ | ------------------------- |
+| Yarn Cache          | 17 GB  | Safe                      |
+| iOS Simulators      | 19 GB  | Safe (rebuilds)           |
+| Xcode Derived Data  | 8.4 GB | Safe (rebuilds)           |
+| Screen Recordings   | 22 GB  | User review only          |
+| Android SDK         | 25 GB  | Partial (select versions) |
+| pnpm Cache          | 4.9 GB | Safe                      |
+| Homebrew Cache      | 3.6 GB | Safe                      |
+| Google/Chrome Cache | 2.9 GB | Safe                      |
+| Playwright Cache    | 520 MB | Safe                      |
+| Electron Cache      | 418 MB | Safe                      |
+| TypeScript Cache    | 380 MB | Safe                      |
+| pip Cache           | 371 MB | Safe                      |
+| Downloads           | 5.6 GB | User review only          |
 
 ## What We're Building
+
 A CLI tool for macOS that scans, visualizes, and safely cleans dev-related storage bloat. Built for software engineers but useful for any Mac user.
 
 ## Tech Stack
+
 - Node.js + TypeScript
 - `chalk` — colored output
 - `ora` — spinners for scan/clean progress
@@ -32,42 +35,47 @@ A CLI tool for macOS that scans, visualizes, and safely cleans dev-related stora
 ## Features
 
 ### 1. Scan & Report
+
 - Disk usage overview (used vs free)
 - Category breakdown table with sizes
 - Color-coded risk levels: green (safe), yellow (review needed), gray (display only)
 - Shows which items exist on the current machine (skips what's not installed)
 
 ### 2. Safe Cleanup (Green — one command each)
+
 Items that can be cleaned with no risk. User confirms, then it runs.
 
-| Item | Command |
-|------|---------|
-| Yarn Cache | `yarn cache clean` |
-| pnpm Cache | `pnpm store prune` |
-| Homebrew Cache | `brew cleanup --prune=all` |
-| pip Cache | `pip cache purge` |
+| Item               | Command                                          |
+| ------------------ | ------------------------------------------------ |
+| Yarn Cache         | `yarn cache clean`                               |
+| pnpm Cache         | `pnpm store prune`                               |
+| Homebrew Cache     | `brew cleanup --prune=all`                       |
+| pip Cache          | `pip cache purge`                                |
 | Xcode Derived Data | `rm -rf ~/Library/Developer/Xcode/DerivedData/*` |
-| TypeScript Cache | `rm -rf ~/Library/Caches/typescript/*` |
-| Playwright Cache | `rm -rf ~/Library/Caches/ms-playwright/*` |
-| Electron Cache | `rm -rf ~/Library/Caches/electron/*` |
-| npm Cache | `npm cache clean --force` |
-| CocoaPods Cache | `pod cache clean --all` |
-| Gradle Cache | `rm -rf ~/.gradle/caches/*` |
-| Maven Cache | `rm -rf ~/.m2/repository/*` |
-| Docker (dangling) | `docker system prune -f` |
+| TypeScript Cache   | `rm -rf ~/Library/Caches/typescript/*`           |
+| Playwright Cache   | `rm -rf ~/Library/Caches/ms-playwright/*`        |
+| Electron Cache     | `rm -rf ~/Library/Caches/electron/*`             |
+| npm Cache          | `npm cache clean --force`                        |
+| CocoaPods Cache    | `pod cache clean --all`                          |
+| Gradle Cache       | `rm -rf ~/.gradle/caches/*`                      |
+| Maven Cache        | `rm -rf ~/.m2/repository/*`                      |
+| Docker (dangling)  | `docker system prune -f`                         |
 
 ### 3. Selective Cleanup (Yellow — list & pick)
+
 Items where the user chooses what to delete.
 
-| Item | Action |
-|------|--------|
-| iOS Simulators | List simulators, user picks which to delete (`xcrun simctl delete <id>`) |
-| Xcode Platforms | List platforms with sizes, user removes old ones |
-| Android SDK versions | List installed versions, user removes unused |
-| Android Emulator images | List AVDs with sizes, user deletes unused |
+| Item                    | Action                                                                   |
+| ----------------------- | ------------------------------------------------------------------------ |
+| iOS Simulators          | List simulators, user picks which to delete (`xcrun simctl delete <id>`) |
+| Xcode Platforms         | List platforms with sizes, user removes old ones                         |
+| Android SDK versions    | List installed versions, user removes unused                             |
+| Android Emulator images | List AVDs with sizes, user deletes unused                                |
 
 ### 4. Display Only (Gray — no delete)
+
 Shown for awareness, no action taken:
+
 - Screen Recordings
 - Downloads folder
 

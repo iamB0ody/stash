@@ -18,7 +18,9 @@
   "scripts": {
     "dev": "tsx src/main.ts"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@stash/engine": "workspace:*",
     "@clack/prompts": "^1.1.0",

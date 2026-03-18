@@ -50,7 +50,14 @@ export async function deleteSimulators(udids: string[]): Promise<CleanResult[]> 
       results.push({ id: udid, name: udid, success: true, freedBytes: 0, freedHuman: '0 B' });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      results.push({ id: udid, name: udid, success: false, freedBytes: 0, freedHuman: '0 B', error: message });
+      results.push({
+        id: udid,
+        name: udid,
+        success: false,
+        freedBytes: 0,
+        freedHuman: '0 B',
+        error: message,
+      });
     }
   }
   return results;
@@ -85,7 +92,14 @@ export async function deleteAndroidSDKVersions(paths: string[]): Promise<CleanRe
       results.push({ id: path, name: path, success: true, freedBytes: 0, freedHuman: '0 B' });
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err);
-      results.push({ id: path, name: path, success: false, freedBytes: 0, freedHuman: '0 B', error: message });
+      results.push({
+        id: path,
+        name: path,
+        success: false,
+        freedBytes: 0,
+        freedHuman: '0 B',
+        error: message,
+      });
     }
   }
   return results;
@@ -126,10 +140,23 @@ export async function deleteAVDs(avdNames: string[]): Promise<CleanResult[]> {
         await runCommand(
           `rm -rf "${join(avdPath, avdName + '.avd')}" "${join(avdPath, avdName + '.ini')}"`,
         );
-        results.push({ id: avdName, name: avdName, success: true, freedBytes: 0, freedHuman: '0 B' });
+        results.push({
+          id: avdName,
+          name: avdName,
+          success: true,
+          freedBytes: 0,
+          freedHuman: '0 B',
+        });
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
-        results.push({ id: avdName, name: avdName, success: false, freedBytes: 0, freedHuman: '0 B', error: message });
+        results.push({
+          id: avdName,
+          name: avdName,
+          success: false,
+          freedBytes: 0,
+          freedHuman: '0 B',
+          error: message,
+        });
       }
     }
   }

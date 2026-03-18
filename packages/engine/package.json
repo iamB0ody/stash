@@ -12,7 +12,9 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@stash/core": "workspace:*",
     "@stash/platform-mac": "workspace:*",

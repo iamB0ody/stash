@@ -71,14 +71,30 @@ export function displayStorageOverview(overview: StorageOverview): void {
 
 export function displayScanResults(results: ScanResult[]): void {
   const table = new Table({
-    head: [chalk.bold.cyan(''), chalk.bold.cyan('Item'), chalk.bold.cyan('Size'), chalk.bold.cyan('Status')],
+    head: [
+      chalk.bold.cyan(''),
+      chalk.bold.cyan('Item'),
+      chalk.bold.cyan('Size'),
+      chalk.bold.cyan('Status'),
+    ],
     colWidths: [4, 28, 12, 10],
     style: { head: [], border: ['gray'] },
     chars: {
-      top: '\u2500', 'top-mid': '\u252C', 'top-left': '\u256D', 'top-right': '\u256E',
-      bottom: '\u2500', 'bottom-mid': '\u2534', 'bottom-left': '\u2570', 'bottom-right': '\u256F',
-      left: '\u2502', 'left-mid': '\u251C', mid: '\u2500', 'mid-mid': '\u253C',
-      right: '\u2502', 'right-mid': '\u2524', middle: '\u2502',
+      top: '\u2500',
+      'top-mid': '\u252C',
+      'top-left': '\u256D',
+      'top-right': '\u256E',
+      bottom: '\u2500',
+      'bottom-mid': '\u2534',
+      'bottom-left': '\u2570',
+      'bottom-right': '\u256F',
+      left: '\u2502',
+      'left-mid': '\u251C',
+      mid: '\u2500',
+      'mid-mid': '\u253C',
+      right: '\u2502',
+      'right-mid': '\u2524',
+      middle: '\u2502',
     },
   });
 

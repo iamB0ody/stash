@@ -6,7 +6,14 @@ import { scanCategory } from './scanner.js';
 export async function cleanItem(id: string): Promise<CleanResult> {
   const category = categories.find((c) => c.id === id);
   if (!category) {
-    return { id, name: id, success: false, freedBytes: 0, freedHuman: '0 B', error: 'Category not found' };
+    return {
+      id,
+      name: id,
+      success: false,
+      freedBytes: 0,
+      freedHuman: '0 B',
+      error: 'Category not found',
+    };
   }
 
   if (!category.cleanCommand) {

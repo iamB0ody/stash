@@ -52,12 +52,7 @@ async function parseAPFSContainers(): Promise<
       }
 
       // For non-system containers (external drives), use the first volume
-      if (
-        nameMatch &&
-        mountMatch &&
-        mountMatch[1] !== 'Not Mounted' &&
-        name === 'Unknown'
-      ) {
+      if (nameMatch && mountMatch && mountMatch[1] !== 'Not Mounted' && name === 'Unknown') {
         name = nameMatch[1].trim();
         mountPoint = mountMatch[1].trim();
       }
@@ -78,9 +73,7 @@ async function parseAPFSContainers(): Promise<
 /**
  * Fallback: parse non-APFS volumes from `df` (HFS+, ExFAT, FAT32, etc.)
  */
-async function parseNonAPFSVolumes(
-  apfsMountPoints: Set<string>,
-): Promise<DiskInfo[]> {
+async function parseNonAPFSVolumes(apfsMountPoints: Set<string>): Promise<DiskInfo[]> {
   const { stdout } = await runCommand('df -k');
   const lines = stdout.trim().split('\n').slice(1); // skip header
   const disks: DiskInfo[] = [];
@@ -154,9 +147,8 @@ export async function getStorageOverview(): Promise<StorageOverview> {
   disks.push(...nonApfs);
 
   // Primary disk is the one containing root (/)
-  const primary = disks.find(
-    (d) => d.mountPoint === '/' || d.mountPoint === '/System/Volumes/Data',
-  ) || disks[0];
+  const primary =
+    disks.find((d) => d.mountPoint === '/' || d.mountPoint === '/System/Volumes/Data') || disks[0];
 
   return { disks, primary };
 }

@@ -1,4 +1,3 @@
-
 <div align="center">
 
 <picture>
@@ -63,11 +62,11 @@ stashitnow
 
 ## Platforms
 
-| Platform | Categories | Highlights |
-|----------|-----------|------------|
-| **macOS** | 25 | APFS-aware disk scanning, Xcode/CocoaPods/Swift PM, iOS Simulators |
-| **Windows** | 24 | PowerShell-based, NuGet/VS/Edge, Windows Temp cleanup |
-| **Linux** | 26 | XDG-aware, APT/Snap/Flatpak, Journal logs, Firefox |
+| Platform    | Categories | Highlights                                                         |
+| ----------- | ---------- | ------------------------------------------------------------------ |
+| **macOS**   | 25         | APFS-aware disk scanning, Xcode/CocoaPods/Swift PM, iOS Simulators |
+| **Windows** | 24         | PowerShell-based, NuGet/VS/Edge, Windows Temp cleanup              |
+| **Linux**   | 26         | XDG-aware, APT/Snap/Flatpak, Journal logs, Firefox                 |
 
 ## What It Nukes
 
@@ -75,43 +74,43 @@ stashitnow
 
 These are caches. They re-download automatically. Zero risk.
 
-| Target | What's hiding there |
-|--------|-------------------|
-| **npm / pnpm / Yarn** | Package manager download caches |
-| **Homebrew** | Old bottles and logs |
-| **pip** | Python package cache |
-| **Xcode Derived Data & Archives** | Build artifacts that rebuild on open |
-| **TypeScript / Playwright / Electron** | Compiler and browser caches |
-| **CocoaPods / Gradle / Maven** | Dependency caches |
-| **Cargo / Go / Composer / Ruby Gems** | Language-specific caches |
-| **Swift PM** | Swift Package Manager resolved packages |
-| **NuGet** | .NET package cache |
-| **Docker** | Dangling images, stopped containers, build cache |
-| **Chrome / Edge / Firefox** | Browser caches |
-| **VS Code / Visual Studio** | Editor caches |
-| **APT / Snap / Flatpak** | Linux package manager caches |
-| **Journal Logs** | Systemd journal log accumulation |
-| **Windows Temp / Trash / Thumbnails** | System caches |
+| Target                                 | What's hiding there                              |
+| -------------------------------------- | ------------------------------------------------ |
+| **npm / pnpm / Yarn**                  | Package manager download caches                  |
+| **Homebrew**                           | Old bottles and logs                             |
+| **pip**                                | Python package cache                             |
+| **Xcode Derived Data & Archives**      | Build artifacts that rebuild on open             |
+| **TypeScript / Playwright / Electron** | Compiler and browser caches                      |
+| **CocoaPods / Gradle / Maven**         | Dependency caches                                |
+| **Cargo / Go / Composer / Ruby Gems**  | Language-specific caches                         |
+| **Swift PM**                           | Swift Package Manager resolved packages          |
+| **NuGet**                              | .NET package cache                               |
+| **Docker**                             | Dangling images, stopped containers, build cache |
+| **Chrome / Edge / Firefox**            | Browser caches                                   |
+| **VS Code / Visual Studio**            | Editor caches                                    |
+| **APT / Snap / Flatpak**               | Linux package manager caches                     |
+| **Journal Logs**                       | Systemd journal log accumulation                 |
+| **Windows Temp / Trash / Thumbnails**  | System caches                                    |
 
 ### 🟡 Selective — you pick what goes
 
 These need your attention. Stash shows you what's there, you choose what to axe.
 
-| Target | What you're choosing |
-|--------|---------------------|
-| **iOS Simulators** | Which simulator devices to delete |
-| **Android SDK** | Which platform versions to remove |
-| **Android Emulators** | Which AVDs to trash |
+| Target                | What you're choosing              |
+| --------------------- | --------------------------------- |
+| **iOS Simulators**    | Which simulator devices to delete |
+| **Android SDK**       | Which platform versions to remove |
+| **Android Emulators** | Which AVDs to trash               |
 
 ### ⚪ Display Only — just so you know
 
 Not touching these. Just showing you the damage.
 
-| Target | Why it's here |
-|--------|--------------|
-| **Downloads** | You know what's in there. We both know. |
+| Target                | Why it's here                                |
+| --------------------- | -------------------------------------------- |
+| **Downloads**         | You know what's in there. We both know.      |
 | **Screen Recordings** | That 4GB screen recording from last Tuesday. |
-| **Recycle Bin** | What's lurking in there. |
+| **Recycle Bin**       | What's lurking in there.                     |
 
 ## Features
 
@@ -168,15 +167,15 @@ pnpm graph            # Nx dependency graph
 
 ### Project Map
 
-| Package | What it does |
-|---------|-------------|
-| `@stash/core` | Types, interfaces, shared utils, logger, updater |
-| `@stash/engine` | Detects your OS, returns the right platform |
-| `@stash/platform-mac` | macOS support — 25 scan categories + dev tools |
-| `@stash/platform-windows` | Windows support — 24 scan categories + dev tools |
-| `@stash/platform-linux` | Linux support — 26 scan categories + dev tools |
-| `@stash/cli` | The interactive CLI you see above |
-| `@stash/mcp` | MCP server for AI coding assistants (placeholder) |
+| Package                   | What it does                                      |
+| ------------------------- | ------------------------------------------------- |
+| `@stash/core`             | Types, interfaces, shared utils, logger, updater  |
+| `@stash/engine`           | Detects your OS, returns the right platform       |
+| `@stash/platform-mac`     | macOS support — 25 scan categories + dev tools    |
+| `@stash/platform-windows` | Windows support — 24 scan categories + dev tools  |
+| `@stash/platform-linux`   | Linux support — 26 scan categories + dev tools    |
+| `@stash/cli`              | The interactive CLI you see above                 |
+| `@stash/mcp`              | MCP server for AI coding assistants (placeholder) |
 
 ## Roadmap
 

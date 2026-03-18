@@ -19,11 +19,11 @@ stashitnow
 
 ## Platforms
 
-| Platform | Categories | Highlights |
-|----------|-----------|------------|
-| **macOS** | 25 | APFS-aware disk scanning, Xcode/CocoaPods/Swift PM, iOS Simulators |
-| **Windows** | 24 | PowerShell-based, NuGet/VS/Edge, Windows Temp cleanup |
-| **Linux** | 26 | XDG-aware, APT/Snap/Flatpak, Journal logs, Firefox |
+| Platform    | Categories | Highlights                                                         |
+| ----------- | ---------- | ------------------------------------------------------------------ |
+| **macOS**   | 25         | APFS-aware disk scanning, Xcode/CocoaPods/Swift PM, iOS Simulators |
+| **Windows** | 24         | PowerShell-based, NuGet/VS/Edge, Windows Temp cleanup              |
+| **Linux**   | 26         | XDG-aware, APT/Snap/Flatpak, Journal logs, Firefox                 |
 
 ## What it cleans
 

@@ -1,4 +1,11 @@
-import type { Category, CleanResult, DevToolItem, Platform, ScanResult, StorageOverview } from '@stash/core';
+import type {
+  Category,
+  CleanResult,
+  DevToolItem,
+  Platform,
+  ScanResult,
+  StorageOverview,
+} from '@stash/core';
 import { categories } from './categories.js';
 import { cleanAllSafe, cleanItem } from './cleaner.js';
 import {

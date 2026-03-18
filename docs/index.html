@@ -1,496 +1,565 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stash It — Your disk is full of junk. Let's fix that.</title>
-  <meta name="description" content="One command to reclaim gigabytes of disk space. Clean developer caches, build artifacts, and unused tools on macOS, Windows, and Linux.">
-  <meta property="og:title" content="Stash It — Disk Space Recovery for Developers">
-  <meta property="og:description" content="One command to reclaim gigabytes of disk space. Clean developer caches, build artifacts, and unused tools.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://iamB0ody.github.io/stashit">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --cyan: #06b6d4;
-      --purple: #a78bfa;
-      --pink: #f472b6;
-      --green: #4ade80;
-      --yellow: #facc15;
-      --gray-50: #f8fafc;
-      --gray-100: #f1f5f9;
-      --gray-200: #e2e8f0;
-      --gray-400: #94a3b8;
-      --gray-500: #64748b;
-      --gray-600: #475569;
-      --gray-700: #334155;
-      --gray-800: #1e293b;
-      --gray-900: #0f172a;
-      --gray-950: #020617;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stash It — Your disk is full of junk. Let's fix that.</title>
+    <meta
+      name="description"
+      content="One command to reclaim gigabytes of disk space. Clean developer caches, build artifacts, and unused tools on macOS, Windows, and Linux."
+    />
+    <meta property="og:title" content="Stash It — Disk Space Recovery for Developers" />
+    <meta
+      property="og:description"
+      content="One command to reclaim gigabytes of disk space. Clean developer caches, build artifacts, and unused tools."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://iamB0ody.github.io/stashit" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --cyan: #06b6d4;
+        --purple: #a78bfa;
+        --pink: #f472b6;
+        --green: #4ade80;
+        --yellow: #facc15;
+        --gray-50: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+        --gray-950: #020617;
+      }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--gray-950);
-      color: var(--gray-200);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+      body {
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: var(--gray-950);
+        color: var(--gray-200);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
 
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
 
-    /* Hero */
-    .hero {
-      text-align: center;
-      padding: 80px 0 60px;
-    }
+      /* Hero */
+      .hero {
+        text-align: center;
+        padding: 80px 0 60px;
+      }
 
-    .logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(2.5rem, 8vw, 4.5rem);
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 16px;
-    }
+      .logo {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: clamp(2.5rem, 8vw, 4.5rem);
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+      }
 
-    .tagline {
-      font-size: clamp(1rem, 3vw, 1.3rem);
-      color: var(--gray-400);
-      margin-bottom: 40px;
-    }
+      .tagline {
+        font-size: clamp(1rem, 3vw, 1.3rem);
+        color: var(--gray-400);
+        margin-bottom: 40px;
+      }
 
-    .install-box {
-      display: inline-block;
-      background: var(--gray-900);
-      border: 1px solid var(--gray-700);
-      border-radius: 12px;
-      padding: 16px 32px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1.1rem;
-      color: var(--cyan);
-      cursor: pointer;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      position: relative;
-    }
+      .install-box {
+        display: inline-block;
+        background: var(--gray-900);
+        border: 1px solid var(--gray-700);
+        border-radius: 12px;
+        padding: 16px 32px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.1rem;
+        color: var(--cyan);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        position: relative;
+      }
 
-    .install-box:hover {
-      border-color: var(--cyan);
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
-    }
+      .install-box:hover {
+        border-color: var(--cyan);
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+      }
 
-    .install-box .hint {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--gray-500);
-      margin-top: 6px;
-      font-family: 'Inter', sans-serif;
-    }
+      .install-box .hint {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        margin-top: 6px;
+        font-family: 'Inter', sans-serif;
+      }
 
-    /* Badges */
-    .badges {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
+      /* Badges */
+      .badges {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      background: var(--gray-900);
-      border: 1px solid var(--gray-800);
-      color: var(--gray-400);
-    }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        background: var(--gray-900);
+        border: 1px solid var(--gray-800);
+        color: var(--gray-400);
+      }
 
-    .badge.green { border-color: #166534; color: var(--green); }
-    .badge.cyan { border-color: #164e63; color: var(--cyan); }
-    .badge.purple { border-color: #4c1d95; color: var(--purple); }
+      .badge.green {
+        border-color: #166534;
+        color: var(--green);
+      }
+      .badge.cyan {
+        border-color: #164e63;
+        color: var(--cyan);
+      }
+      .badge.purple {
+        border-color: #4c1d95;
+        color: var(--purple);
+      }
 
-    /* Screenshot */
-    .screenshot-section {
-      text-align: center;
-      padding: 40px 0;
-    }
+      /* Screenshot */
+      .screenshot-section {
+        text-align: center;
+        padding: 40px 0;
+      }
 
-    .screenshot-section img {
-      max-width: 100%;
-      width: 640px;
-      border-radius: 12px;
-      border: 1px solid var(--gray-800);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-    }
+      .screenshot-section img {
+        max-width: 100%;
+        width: 640px;
+        border-radius: 12px;
+        border: 1px solid var(--gray-800);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      }
 
-    /* Features */
-    .features {
-      padding: 80px 0;
-    }
+      /* Features */
+      .features {
+        padding: 80px 0;
+      }
 
-    .features h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 48px;
-      color: var(--gray-50);
-    }
+      .features h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 48px;
+        color: var(--gray-50);
+      }
 
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-    }
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
 
-    .feature-card {
-      background: var(--gray-900);
-      border: 1px solid var(--gray-800);
-      border-radius: 12px;
-      padding: 28px;
-      transition: border-color 0.2s;
-    }
+      .feature-card {
+        background: var(--gray-900);
+        border: 1px solid var(--gray-800);
+        border-radius: 12px;
+        padding: 28px;
+        transition: border-color 0.2s;
+      }
 
-    .feature-card:hover {
-      border-color: var(--gray-600);
-    }
+      .feature-card:hover {
+        border-color: var(--gray-600);
+      }
 
-    .feature-card .icon {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-    }
+      .feature-card .icon {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+      }
 
-    .feature-card h3 {
-      font-size: 1.1rem;
-      color: var(--gray-50);
-      margin-bottom: 8px;
-    }
+      .feature-card h3 {
+        font-size: 1.1rem;
+        color: var(--gray-50);
+        margin-bottom: 8px;
+      }
 
-    .feature-card p {
-      font-size: 0.9rem;
-      color: var(--gray-400);
-    }
+      .feature-card p {
+        font-size: 0.9rem;
+        color: var(--gray-400);
+      }
 
-    /* Platforms */
-    .platforms {
-      padding: 60px 0;
-      text-align: center;
-    }
+      /* Platforms */
+      .platforms {
+        padding: 60px 0;
+        text-align: center;
+      }
 
-    .platforms h2 {
-      font-size: 2rem;
-      margin-bottom: 16px;
-      color: var(--gray-50);
-    }
+      .platforms h2 {
+        font-size: 2rem;
+        margin-bottom: 16px;
+        color: var(--gray-50);
+      }
 
-    .platforms .sub {
-      color: var(--gray-400);
-      margin-bottom: 40px;
-    }
+      .platforms .sub {
+        color: var(--gray-400);
+        margin-bottom: 40px;
+      }
 
-    .platform-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 720px;
-      margin: 0 auto;
-    }
+      .platform-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
-    .platform-card {
-      background: var(--gray-900);
-      border: 1px solid var(--gray-800);
-      border-radius: 12px;
-      padding: 32px 20px;
-    }
+      .platform-card {
+        background: var(--gray-900);
+        border: 1px solid var(--gray-800);
+        border-radius: 12px;
+        padding: 32px 20px;
+      }
 
-    .platform-card .os { font-size: 2.5rem; margin-bottom: 12px; }
-    .platform-card h3 { font-size: 1rem; color: var(--gray-50); margin-bottom: 4px; }
-    .platform-card .count { font-size: 0.85rem; color: var(--gray-500); }
+      .platform-card .os {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+      }
+      .platform-card h3 {
+        font-size: 1rem;
+        color: var(--gray-50);
+        margin-bottom: 4px;
+      }
+      .platform-card .count {
+        font-size: 0.85rem;
+        color: var(--gray-500);
+      }
 
-    /* Categories */
-    .categories {
-      padding: 60px 0;
-    }
+      /* Categories */
+      .categories {
+        padding: 60px 0;
+      }
 
-    .categories h2 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 40px;
-      color: var(--gray-50);
-    }
+      .categories h2 {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 40px;
+        color: var(--gray-50);
+      }
 
-    .risk-section {
-      margin-bottom: 32px;
-    }
+      .risk-section {
+        margin-bottom: 32px;
+      }
 
-    .risk-section h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      padding-left: 4px;
-    }
+      .risk-section h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        padding-left: 4px;
+      }
 
-    .risk-section h3.safe { color: var(--green); }
-    .risk-section h3.selective { color: var(--yellow); }
-    .risk-section h3.display { color: var(--gray-500); }
+      .risk-section h3.safe {
+        color: var(--green);
+      }
+      .risk-section h3.selective {
+        color: var(--yellow);
+      }
+      .risk-section h3.display {
+        color: var(--gray-500);
+      }
 
-    .tag-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+      .tag-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
 
-    .tag {
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 500;
-      background: var(--gray-900);
-      border: 1px solid var(--gray-800);
-      color: var(--gray-300);
-    }
+      .tag {
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        background: var(--gray-900);
+        border: 1px solid var(--gray-800);
+        color: var(--gray-300);
+      }
 
-    /* CTA */
-    .cta {
-      text-align: center;
-      padding: 80px 0 100px;
-    }
+      /* CTA */
+      .cta {
+        text-align: center;
+        padding: 80px 0 100px;
+      }
 
-    .cta h2 {
-      font-size: 2rem;
-      color: var(--gray-50);
-      margin-bottom: 8px;
-    }
+      .cta h2 {
+        font-size: 2rem;
+        color: var(--gray-50);
+        margin-bottom: 8px;
+      }
 
-    .cta p {
-      color: var(--gray-400);
-      margin-bottom: 32px;
-    }
+      .cta p {
+        color: var(--gray-400);
+        margin-bottom: 32px;
+      }
 
-    .cta-links {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+      .cta-links {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
 
-    .cta-links a {
-      padding: 12px 28px;
-      border-radius: 10px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
+      .cta-links a {
+        padding: 12px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
 
-    .cta-links a:hover { opacity: 0.85; }
+      .cta-links a:hover {
+        opacity: 0.85;
+      }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
-      color: white;
-    }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--cyan), var(--purple));
+        color: white;
+      }
 
-    .btn-secondary {
-      background: var(--gray-800);
-      color: var(--gray-200);
-      border: 1px solid var(--gray-700);
-    }
+      .btn-secondary {
+        background: var(--gray-800);
+        color: var(--gray-200);
+        border: 1px solid var(--gray-700);
+      }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 40px 0;
-      border-top: 1px solid var(--gray-800);
-      color: var(--gray-500);
-      font-size: 0.85rem;
-    }
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 40px 0;
+        border-top: 1px solid var(--gray-800);
+        color: var(--gray-500);
+        font-size: 0.85rem;
+      }
 
-    footer a { color: var(--gray-400); text-decoration: none; }
-    footer a:hover { color: var(--gray-200); }
+      footer a {
+        color: var(--gray-400);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: var(--gray-200);
+      }
 
-    @media (max-width: 640px) {
-      .platform-grid { grid-template-columns: 1fr; max-width: 300px; }
-      .hero { padding: 50px 0 40px; }
-    }
-  </style>
-</head>
-<body>
+      @media (max-width: 640px) {
+        .platform-grid {
+          grid-template-columns: 1fr;
+          max-width: 300px;
+        }
+        .hero {
+          padding: 50px 0 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="logo">STASH IT</div>
+        <p class="tagline">Your disk is full of junk. Let's fix that.</p>
 
-  <div class="container">
-
-    <!-- Hero -->
-    <section class="hero">
-      <div class="logo">STASH IT</div>
-      <p class="tagline">Your disk is full of junk. Let's fix that.</p>
-
-      <div class="install-box" onclick="navigator.clipboard.writeText('npx stashitnow'); this.querySelector('.hint').textContent = 'Copied!'">
-        $ npx stashitnow
-        <span class="hint">click to copy</span>
-      </div>
-
-      <div class="badges">
-        <span class="badge green">macOS</span>
-        <span class="badge cyan">Windows</span>
-        <span class="badge purple">Linux</span>
-        <span class="badge">Node.js 22+</span>
-        <span class="badge">MIT License</span>
-      </div>
-    </section>
-
-    <!-- Screenshot -->
-    <section class="screenshot-section">
-      <img src="screenshot.png" alt="Stash It CLI in action">
-    </section>
-
-    <!-- Features -->
-    <section class="features">
-      <h2>Why developers love it</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="icon">&#9889;</div>
-          <h3>One command</h3>
-          <p>npx stashitnow and you're scanning. No config, no setup, no BS.</p>
+        <div
+          class="install-box"
+          onclick="
+            navigator.clipboard.writeText('npx stashitnow');
+            this.querySelector('.hint').textContent = 'Copied!';
+          "
+        >
+          $ npx stashitnow
+          <span class="hint">click to copy</span>
         </div>
-        <div class="feature-card">
-          <div class="icon">&#128274;</div>
-          <h3>Safe by default</h3>
-          <p>Only deletes caches that re-download automatically. Risky items require your explicit selection.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">&#127912;</div>
-          <h3>Interactive UI</h3>
-          <p>Multi-select what to clean, see sizes before you commit, track your history.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">&#128187;</div>
-          <h3>Cross-platform</h3>
-          <p>Full support for macOS (APFS-aware), Windows (PowerShell), and Linux (XDG, APT, Snap, Flatpak).</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">&#128295;</div>
-          <h3>Dev Tools Manager</h3>
-          <p>Manage iOS Simulators, Android SDK versions, and emulators from one place.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon">&#128200;</div>
-          <h3>Action History</h3>
-          <p>Every cleanup is logged. See what you cleaned, when, and how much space you recovered.</p>
-        </div>
-      </div>
-    </section>
 
-    <!-- Platforms -->
-    <section class="platforms">
-      <h2>Works everywhere</h2>
-      <p class="sub">Full platform implementations, not wrappers.</p>
-      <div class="platform-grid">
-        <div class="platform-card">
-          <div class="os">&#63743;</div>
-          <h3>macOS</h3>
-          <p class="count">25 categories &bull; APFS-aware</p>
+        <div class="badges">
+          <span class="badge green">macOS</span>
+          <span class="badge cyan">Windows</span>
+          <span class="badge purple">Linux</span>
+          <span class="badge">Node.js 22+</span>
+          <span class="badge">MIT License</span>
         </div>
-        <div class="platform-card">
-          <div class="os">&#128187;</div>
-          <h3>Windows</h3>
-          <p class="count">24 categories &bull; PowerShell</p>
+      </section>
+
+      <!-- Screenshot -->
+      <section class="screenshot-section">
+        <img src="screenshot.png" alt="Stash It CLI in action" />
+      </section>
+
+      <!-- Features -->
+      <section class="features">
+        <h2>Why developers love it</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="icon">&#9889;</div>
+            <h3>One command</h3>
+            <p>npx stashitnow and you're scanning. No config, no setup, no BS.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#128274;</div>
+            <h3>Safe by default</h3>
+            <p>
+              Only deletes caches that re-download automatically. Risky items require your explicit
+              selection.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#127912;</div>
+            <h3>Interactive UI</h3>
+            <p>Multi-select what to clean, see sizes before you commit, track your history.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#128187;</div>
+            <h3>Cross-platform</h3>
+            <p>
+              Full support for macOS (APFS-aware), Windows (PowerShell), and Linux (XDG, APT, Snap,
+              Flatpak).
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#128295;</div>
+            <h3>Dev Tools Manager</h3>
+            <p>Manage iOS Simulators, Android SDK versions, and emulators from one place.</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">&#128200;</div>
+            <h3>Action History</h3>
+            <p>
+              Every cleanup is logged. See what you cleaned, when, and how much space you recovered.
+            </p>
+          </div>
         </div>
-        <div class="platform-card">
-          <div class="os">&#128039;</div>
-          <h3>Linux</h3>
-          <p class="count">26 categories &bull; XDG / APT / Snap</p>
+      </section>
+
+      <!-- Platforms -->
+      <section class="platforms">
+        <h2>Works everywhere</h2>
+        <p class="sub">Full platform implementations, not wrappers.</p>
+        <div class="platform-grid">
+          <div class="platform-card">
+            <div class="os">&#63743;</div>
+            <h3>macOS</h3>
+            <p class="count">25 categories &bull; APFS-aware</p>
+          </div>
+          <div class="platform-card">
+            <div class="os">&#128187;</div>
+            <h3>Windows</h3>
+            <p class="count">24 categories &bull; PowerShell</p>
+          </div>
+          <div class="platform-card">
+            <div class="os">&#128039;</div>
+            <h3>Linux</h3>
+            <p class="count">26 categories &bull; XDG / APT / Snap</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Categories -->
-    <section class="categories">
-      <h2>What it cleans</h2>
+      <!-- Categories -->
+      <section class="categories">
+        <h2>What it cleans</h2>
 
-      <div class="risk-section">
-        <h3 class="safe">Safe — just send it</h3>
-        <div class="tag-grid">
-          <span class="tag">npm</span>
-          <span class="tag">pnpm</span>
-          <span class="tag">Yarn</span>
-          <span class="tag">pip</span>
-          <span class="tag">Homebrew</span>
-          <span class="tag">Xcode Derived Data</span>
-          <span class="tag">Xcode Archives</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Playwright</span>
-          <span class="tag">Electron</span>
-          <span class="tag">CocoaPods</span>
-          <span class="tag">Gradle</span>
-          <span class="tag">Maven</span>
-          <span class="tag">Cargo (Rust)</span>
-          <span class="tag">Go Modules</span>
-          <span class="tag">Composer (PHP)</span>
-          <span class="tag">Ruby Gems</span>
-          <span class="tag">Swift PM</span>
-          <span class="tag">NuGet (.NET)</span>
-          <span class="tag">Docker</span>
-          <span class="tag">Chrome</span>
-          <span class="tag">Edge</span>
-          <span class="tag">Firefox</span>
-          <span class="tag">VS Code</span>
-          <span class="tag">Visual Studio</span>
-          <span class="tag">Windows Temp</span>
-          <span class="tag">APT Cache</span>
-          <span class="tag">Snap</span>
-          <span class="tag">Flatpak</span>
-          <span class="tag">Journal Logs</span>
-          <span class="tag">Thumbnails</span>
-          <span class="tag">Trash</span>
+        <div class="risk-section">
+          <h3 class="safe">Safe — just send it</h3>
+          <div class="tag-grid">
+            <span class="tag">npm</span>
+            <span class="tag">pnpm</span>
+            <span class="tag">Yarn</span>
+            <span class="tag">pip</span>
+            <span class="tag">Homebrew</span>
+            <span class="tag">Xcode Derived Data</span>
+            <span class="tag">Xcode Archives</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Playwright</span>
+            <span class="tag">Electron</span>
+            <span class="tag">CocoaPods</span>
+            <span class="tag">Gradle</span>
+            <span class="tag">Maven</span>
+            <span class="tag">Cargo (Rust)</span>
+            <span class="tag">Go Modules</span>
+            <span class="tag">Composer (PHP)</span>
+            <span class="tag">Ruby Gems</span>
+            <span class="tag">Swift PM</span>
+            <span class="tag">NuGet (.NET)</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Chrome</span>
+            <span class="tag">Edge</span>
+            <span class="tag">Firefox</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Visual Studio</span>
+            <span class="tag">Windows Temp</span>
+            <span class="tag">APT Cache</span>
+            <span class="tag">Snap</span>
+            <span class="tag">Flatpak</span>
+            <span class="tag">Journal Logs</span>
+            <span class="tag">Thumbnails</span>
+            <span class="tag">Trash</span>
+          </div>
         </div>
-      </div>
 
-      <div class="risk-section">
-        <h3 class="selective">Selective — you pick what goes</h3>
-        <div class="tag-grid">
-          <span class="tag">iOS Simulators</span>
-          <span class="tag">Android SDK</span>
-          <span class="tag">Android Emulators</span>
+        <div class="risk-section">
+          <h3 class="selective">Selective — you pick what goes</h3>
+          <div class="tag-grid">
+            <span class="tag">iOS Simulators</span>
+            <span class="tag">Android SDK</span>
+            <span class="tag">Android Emulators</span>
+          </div>
         </div>
-      </div>
 
-      <div class="risk-section">
-        <h3 class="display">Display only — just so you know</h3>
-        <div class="tag-grid">
-          <span class="tag">Downloads</span>
-          <span class="tag">Screen Recordings</span>
-          <span class="tag">Recycle Bin</span>
+        <div class="risk-section">
+          <h3 class="display">Display only — just so you know</h3>
+          <div class="tag-grid">
+            <span class="tag">Downloads</span>
+            <span class="tag">Screen Recordings</span>
+            <span class="tag">Recycle Bin</span>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CTA -->
-    <section class="cta">
-      <h2>Ready to reclaim your disk?</h2>
-      <p>One command. Watch the gigabytes come back.</p>
-      <div class="cta-links">
-        <a href="https://www.npmjs.com/package/stashitnow" class="btn-primary">View on npm</a>
-        <a href="https://github.com/iamB0ody/stashit" class="btn-secondary">GitHub</a>
-      </div>
-    </section>
+      <!-- CTA -->
+      <section class="cta">
+        <h2>Ready to reclaim your disk?</h2>
+        <p>One command. Watch the gigabytes come back.</p>
+        <div class="cta-links">
+          <a href="https://www.npmjs.com/package/stashitnow" class="btn-primary">View on npm</a>
+          <a href="https://github.com/iamB0ody/stashit" class="btn-secondary">GitHub</a>
+        </div>
+      </section>
+    </div>
 
-  </div>
-
-  <footer>
-    <p>MIT License &bull; Made by <a href="https://github.com/iamB0ody">iamB0ody</a> &bull; <a href="https://github.com/iamB0ody/stashit">Source Code</a></p>
-  </footer>
-
-</body>
+    <footer>
+      <p>
+        MIT License &bull; Made by <a href="https://github.com/iamB0ody">iamB0ody</a> &bull;
+        <a href="https://github.com/iamB0ody/stashit">Source Code</a>
+      </p>
+    </footer>
+  </body>
 </html>
