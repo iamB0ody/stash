@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "outDir": "./dist", "rootDir": "./src" },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts"],
+  "references": [
+    { "path": "../core/tsconfig.lib.json" },
+    { "path": "../platform-mac/tsconfig.lib.json" },
+    { "path": "../platform-windows/tsconfig.lib.json" },
+    { "path": "../platform-linux/tsconfig.lib.json" }
+  ]
+}

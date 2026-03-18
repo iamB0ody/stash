@@ -1,0 +1,19 @@
+{
+  "name": "@stash/mcp",
+  "version": "0.1.0",
+  "description": "Stash MCP server — for Claude, OpenCode, Codex, and other AI tools",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "@stash/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@stash/engine": "workspace:*"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/platform-mac" },
+    { "path": "./packages/platform-windows" },
+    { "path": "./packages/platform-linux" },
+    { "path": "./packages/engine" },
+    { "path": "./apps/cli" },
+    { "path": "./apps/mcp" }
+  ]
+}

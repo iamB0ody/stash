@@ -1,0 +1,26 @@
+{
+  "name": "@stash/monorepo",
+  "private": true,
+  "description": "Multi-platform storage cleaner for developers",
+  "scripts": {
+    "build": "nx run-many -t build",
+    "dev": "nx run @stash/cli:dev",
+    "test": "nx run-many -t test",
+    "lint": "nx run-many -t lint",
+    "typecheck": "nx run-many -t typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "graph": "nx graph"
+  },
+  "devDependencies": {
+    "@nx/js": "^20.5.0",
+    "@types/node": "^22.19.15",
+    "nx": "^20.5.0",
+    "prettier": "^3.5.3",
+    "typescript": "~5.8.2"
+  },
+  "packageManager": "pnpm@10.26.2",
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
