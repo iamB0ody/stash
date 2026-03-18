@@ -99,7 +99,10 @@ async function quickCleanFlow(engine: Platform) {
   console.log();
   p.log.message(`${figures.pointer} Total: ${chalk.green.bold(formatBytesSimple(totalCleanable))}`);
 
-  const confirmed = await p.confirm({ message: 'Proceed with cleanup?', initialValue: false });
+  const confirmed = await p.confirm({
+    message: `Proceed with cleanup? ${chalk.gray('(Y/n)')}`,
+    initialValue: false,
+  });
 
   if (p.isCancel(confirmed) || !confirmed) {
     p.outro(chalk.gray('Cancelled.'));
@@ -142,6 +145,10 @@ async function selectCleanFlow(engine: Platform) {
     })),
   ];
 
+  p.log.message(
+    chalk.gray(`${figures.arrowDown}${figures.arrowUp} Navigate  Space to toggle  A to select all  Enter to confirm`),
+  );
+
   const selected = await p.multiselect({
     message: 'Select items to clean:',
     options,
@@ -159,7 +166,10 @@ async function selectCleanFlow(engine: Platform) {
     if (item) p.log.info(`${figures.arrowRight} ${item.name} (${item.sizeHuman})`);
   }
 
-  const confirmed = await p.confirm({ message: 'Proceed with cleanup?', initialValue: false });
+  const confirmed = await p.confirm({
+    message: `Proceed with cleanup? ${chalk.gray('(Y/n)')}`,
+    initialValue: false,
+  });
 
   if (p.isCancel(confirmed) || !confirmed) {
     p.outro(chalk.gray('Cancelled.'));
@@ -194,6 +204,10 @@ async function handleSelectiveClean(engine: Platform, categoryId: string) {
     p.log.warn('No items found.');
     return;
   }
+
+  p.log.message(
+    chalk.gray(`${figures.arrowDown}${figures.arrowUp} Navigate  Space to toggle  A to select all  Enter to confirm`),
+  );
 
   const selected = await p.multiselect({
     message: 'Select items to delete:',
@@ -264,6 +278,11 @@ async function main() {
       `  ${figures.pointer} ${label} ${chalk.gray('\u2014')} ${usedColor.bold(`${disk.usedPercent}% used`)} ${chalk.gray('\u2014')} ${disk.usedHuman} / ${disk.totalHuman}`,
     );
   }
+  console.log(
+    chalk.gray(
+      `  ${figures.arrowDown}${figures.arrowUp} Navigate  ${figures.pointer} Enter to select  Space to toggle  Ctrl+C to exit`,
+    ),
+  );
   console.log();
 
   while (true) {
