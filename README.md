@@ -129,7 +129,7 @@ Every OS implements one interface. The engine picks the right one. The CLI (or M
 
 ```bash
 # Clone it
-git clone https://github.com/iamB0ody/stash.git
+git clone https://github.com/iamB0ody/stashit.git
 cd stash
 
 # Install
