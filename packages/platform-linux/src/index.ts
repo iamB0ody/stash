@@ -1,42 +1,68 @@
-import type { Category, CleanResult, DevToolItem, Platform, ScanResult, StorageOverview } from '@stash/core';
+import type {
+  Category,
+  CleanResult,
+  DevToolItem,
+  Platform,
+  ScanResult,
+  StorageOverview,
+} from '@stash/core';
+import { categories } from './categories.js';
+import { cleanAllSafe, cleanItem } from './cleaner.js';
+import {
+  deleteAVDs,
+  deleteAndroidSDKVersions,
+  listAVDs,
+  listAndroidSDKVersions,
+} from './devtools.js';
+import { getStorageOverview, scanAll, scanCategory } from './scanner.js';
 
-/**
- * Linux platform — coming soon.
- * Will support: ~/.cache, ~/.local, snap, flatpak caches.
- */
 export class LinuxPlatform implements Platform {
   readonly name = 'Linux';
   readonly id = 'linux' as const;
 
-  async getStorageOverview(): Promise<StorageOverview> {
-    throw new Error('Linux platform support coming soon');
+  getStorageOverview(): Promise<StorageOverview> {
+    return getStorageOverview();
   }
 
   getCategories(): Category[] {
-    return [];
+    return categories;
   }
 
-  async scanCategory(_category: Category): Promise<ScanResult> {
-    throw new Error('Linux platform support coming soon');
+  scanCategory(category: Category): Promise<ScanResult> {
+    return scanCategory(category);
   }
 
-  async scanAll(_onProgress?: (name: string) => void): Promise<ScanResult[]> {
-    return [];
+  scanAll(onProgress?: (name: string) => void): Promise<ScanResult[]> {
+    return scanAll(onProgress);
   }
 
-  async cleanItem(_id: string): Promise<CleanResult> {
-    throw new Error('Linux platform support coming soon');
+  cleanItem(id: string): Promise<CleanResult> {
+    return cleanItem(id);
   }
 
-  async cleanAllSafe(): Promise<CleanResult[]> {
-    return [];
+  cleanAllSafe(): Promise<CleanResult[]> {
+    return cleanAllSafe();
   }
 
-  async listSelectiveItems(_id: string): Promise<DevToolItem[]> {
-    return [];
+  async listSelectiveItems(id: string): Promise<DevToolItem[]> {
+    switch (id) {
+      case 'android-sdk':
+        return listAndroidSDKVersions();
+      case 'android-emulators':
+        return listAVDs();
+      default:
+        return [];
+    }
   }
 
-  async deleteSelectiveItems(_categoryId: string, _itemIds: string[]): Promise<CleanResult[]> {
-    return [];
+  async deleteSelectiveItems(categoryId: string, itemIds: string[]): Promise<CleanResult[]> {
+    switch (categoryId) {
+      case 'android-sdk':
+        return deleteAndroidSDKVersions(itemIds);
+      case 'android-emulators':
+        return deleteAVDs(itemIds);
+      default:
+        return [];
+    }
   }
 }
