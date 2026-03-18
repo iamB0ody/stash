@@ -1,6 +1,6 @@
 {
   "name": "stashitnow",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Your disk is full of junk. Let's fix that.",
   "type": "module",
   "bin": {
