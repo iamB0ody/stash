@@ -16,7 +16,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[Quick Start](#quick-start) · [What It Nukes](#what-it-nukes) · [How It Works](#how-it-works) · [Contributing](#contributing)
+[Quick Start](#quick-start) · [What It Nukes](#what-it-nukes) · [How It Works](#how-it-works) · [Changelog](CHANGELOG.md) · [Contributing](#contributing)
 
 <br>
 
@@ -61,6 +61,14 @@ stashitnow
 
 > Requires **Node.js 22+**
 
+## Platforms
+
+| Platform | Categories | Highlights |
+|----------|-----------|------------|
+| **macOS** | 25 | APFS-aware disk scanning, Xcode/CocoaPods/Swift PM, iOS Simulators |
+| **Windows** | 24 | PowerShell-based, NuGet/VS/Edge, Windows Temp cleanup |
+| **Linux** | 26 | XDG-aware, APT/Snap/Flatpak, Journal logs, Firefox |
+
 ## What It Nukes
 
 ### 🟢 Safe — just send it
@@ -72,11 +80,17 @@ These are caches. They re-download automatically. Zero risk.
 | **npm / pnpm / Yarn** | Package manager download caches |
 | **Homebrew** | Old bottles and logs |
 | **pip** | Python package cache |
-| **Xcode Derived Data** | Build artifacts that rebuild on open |
+| **Xcode Derived Data & Archives** | Build artifacts that rebuild on open |
 | **TypeScript / Playwright / Electron** | Compiler and browser caches |
 | **CocoaPods / Gradle / Maven** | Dependency caches |
+| **Cargo / Go / Composer / Ruby Gems** | Language-specific caches |
+| **Swift PM** | Swift Package Manager resolved packages |
+| **NuGet** | .NET package cache |
 | **Docker** | Dangling images, stopped containers, build cache |
-| **Chrome** | Browser cache |
+| **Chrome / Edge / Firefox** | Browser caches |
+| **VS Code / Visual Studio** | Editor caches |
+| **APT / Snap / Flatpak** | Linux package manager caches |
+| **Windows Temp / Trash / Thumbnails** | System caches |
 
 ### 🟡 Selective — you pick what goes
 
@@ -96,34 +110,38 @@ Not touching these. Just showing you the damage.
 |--------|--------------|
 | **Downloads** | You know what's in there. We both know. |
 | **Screen Recordings** | That 4GB screen recording from last Tuesday. |
+| **Recycle Bin** | What's lurking in there. |
 
 ## Features
 
 - **One command** — `npx stashitnow` and you're scanning
 - **Smart detection** — only shows tools you actually have installed
+- **Cross-platform** — full macOS, Windows, and Linux support
 - **APFS-aware** — accurate disk numbers on macOS, not the lies `df` tells
 - **Safe by default** — won't delete anything risky without asking
 - **Interactive** — pick exactly what to clean with multi-select
 - **Quick Clean** — one-click nuke for all safe caches
 - **Dev Tools Manager** — manage iOS Simulators, Android SDK & Emulators
+- **Action History** — every cleanup is logged with timestamps and freed space
+- **Auto-update** — checks for new versions on startup, updates in-place from the menu
 
 ## How It Works
 
 ```
 stashit
 ├── packages/
-│   ├── core/               Types & utilities
+│   ├── core/               Types, utilities, logger, updater
 │   ├── engine/             Platform detection
-│   ├── platform-mac/       macOS (23 categories)
-│   ├── platform-windows/   Windows (coming soon)
-│   └── platform-linux/     Linux (coming soon)
+│   ├── platform-mac/       macOS (25 categories)
+│   ├── platform-windows/   Windows (24 categories)
+│   └── platform-linux/     Linux (26 categories)
 ├── apps/
 │   ├── cli/                The interactive CLI
 │   └── mcp/                AI assistant integration (coming soon)
-└── docs/
+└── docs/                   Landing page & assets
 ```
 
-Every OS implements one interface. The engine picks the right one. The CLI (or MCP server, or future VSCode extension) just talks to the engine. Clean separation, works everywhere.
+Every OS implements one interface. The engine picks the right one. The CLI just talks to the engine. Clean separation, works everywhere.
 
 ## Contributing
 
@@ -151,22 +169,26 @@ pnpm graph            # Nx dependency graph
 
 | Package | What it does |
 |---------|-------------|
-| `@stash/core` | Types, interfaces, shared utils |
+| `@stash/core` | Types, interfaces, shared utils, logger, updater |
 | `@stash/engine` | Detects your OS, returns the right platform |
-| `@stash/platform-mac` | macOS support — 23 scan categories + dev tools |
-| `@stash/platform-windows` | Windows support (placeholder) |
-| `@stash/platform-linux` | Linux support (placeholder) |
+| `@stash/platform-mac` | macOS support — 25 scan categories + dev tools |
+| `@stash/platform-windows` | Windows support — 24 scan categories + dev tools |
+| `@stash/platform-linux` | Linux support — 26 scan categories + dev tools |
 | `@stash/cli` | The interactive CLI you see above |
 | `@stash/mcp` | MCP server for AI coding assistants (placeholder) |
 
 ## Roadmap
 
-- [x] macOS support (14 safe + 3 selective + 2 display categories)
+- [x] macOS support (25 categories)
+- [x] Windows support (24 categories)
+- [x] Linux support (26 categories)
 - [x] Interactive CLI with Quick Clean & Select Clean
 - [x] Dev Tools manager (iOS Sims, Android SDK, AVDs)
+- [x] Action history & logging
+- [x] Auto-update checker
 - [x] `npx stashitnow` — published on npm
-- [ ] Windows support
-- [ ] Linux support
+- [x] GitHub Pages landing page
+- [x] GitHub Releases with changelog
 - [ ] MCP server (Claude Code, Cline, Continue, Codex)
 - [ ] CI/CD pipeline
 - [ ] VSCode extension

@@ -1,6 +1,6 @@
 {
   "name": "stashitnow",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Your disk is full of junk. Let's fix that.",
   "type": "module",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "main": "./dist/bin.js",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "bundle": "tsup"
@@ -23,6 +24,7 @@
     "developer-tools",
     "macos",
     "windows",
+    "linux",
     "npm-cache",
     "docker",
     "xcode",
@@ -37,7 +39,7 @@
     "type": "git",
     "url": "git+https://github.com/iamB0ody/stashit.git"
   },
-  "homepage": "https://github.com/iamB0ody/stashit",
+  "homepage": "https://iamB0ody.github.io/stashit",
   "bugs": {
     "url": "https://github.com/iamB0ody/stashit/issues"
   },

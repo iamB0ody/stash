@@ -4,6 +4,8 @@
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.test.ts"],
   "references": [
-    { "path": "../../packages/engine/tsconfig.lib.json" }
+    {
+      "path": "../../packages/engine/tsconfig.lib.json"
+    }
   ]
 }
