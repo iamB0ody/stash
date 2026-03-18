@@ -93,7 +93,7 @@ async function runScan(engine: Platform): Promise<ScanResult[]> {
   displayScanResults(results);
 
   // Log scan action
-  const totalBytes = results.reduce((sum, r) => sum + r.sizeBytes, 0);
+  const _totalBytes = results.reduce((sum, r) => sum + r.sizeBytes, 0);
   logAction({
     action: 'scan',
     categoryId: 'all',
