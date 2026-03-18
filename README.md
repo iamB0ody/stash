@@ -90,6 +90,7 @@ These are caches. They re-download automatically. Zero risk.
 | **Chrome / Edge / Firefox** | Browser caches |
 | **VS Code / Visual Studio** | Editor caches |
 | **APT / Snap / Flatpak** | Linux package manager caches |
+| **Journal Logs** | Systemd journal log accumulation |
 | **Windows Temp / Trash / Thumbnails** | System caches |
 
 ### 🟡 Selective — you pick what goes
